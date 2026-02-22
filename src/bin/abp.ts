@@ -7,6 +7,7 @@ interface ParsedArgs {
   port: number;
   headless: boolean;
   mcp: boolean;
+  setup: boolean;
   sessionDir?: string;
   chromeArgs: string[];
 }
@@ -15,6 +16,7 @@ function parseArgs(argv: string[]): ParsedArgs {
   let port = parseInt(process.env.ABP_PORT || "8222", 10);
   let headless = process.env.ABP_HEADLESS === "1";
   let mcp = false;
+  let setup = false;
   let sessionDir: string | undefined;
   const chromeArgs: string[] = [];
   let pastSeparator = false;
@@ -44,6 +46,8 @@ function parseArgs(argv: string[]): ParsedArgs {
       sessionDir = argv[i].split("=").slice(1).join("=");
     } else if (argv[i] === "--mcp") {
       mcp = true;
+    } else if (argv[i] === "--setup") {
+      setup = true;
     } else if (argv[i] === "--help" || argv[i] === "-h") {
       console.log(`agent-browser-protocol v${ABP_VERSION} (Chrome ${CHROME_VERSION})
 
@@ -54,6 +58,7 @@ Options:
   --port <port>          Port to listen on (default: 8222)
   --headless             Run without a visible window
   --mcp                  Start as stdio MCP proxy (for Claude Code)
+  --setup                Download browser binary and exit
   --session-dir <path>   Directory for session data (database, screenshots)
   --help, -h             Show this help message
 
@@ -77,11 +82,18 @@ Examples:
     }
   }
 
-  return { port, headless, mcp, sessionDir, chromeArgs };
+  return { port, headless, mcp, setup, sessionDir, chromeArgs };
 }
 
 async function main() {
-  const { port, headless, mcp, sessionDir, chromeArgs } = parseArgs(process.argv);
+  const { port, headless, mcp, setup, sessionDir, chromeArgs } = parseArgs(process.argv);
+
+  if (setup) {
+    const { ensureBinary } = await import("../ensure-binary.js");
+    const execPath = await ensureBinary();
+    console.log(`Binary ready: ${execPath}`);
+    return;
+  }
 
   if (mcp) {
     const { runMcpProxy } = await import("../mcp-proxy.js");

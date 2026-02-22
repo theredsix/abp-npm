@@ -4,6 +4,7 @@
 
 export { ABPClient } from "./client.js";
 export { launch } from "./launch.js";
+export { ensureBinary } from "./ensure-binary.js";
 export { getExecutablePath } from "./paths.js";
 export { ABP_VERSION, CHROME_VERSION } from "./paths.js";
 export type { LaunchOptions, Browser } from "./launch.js";

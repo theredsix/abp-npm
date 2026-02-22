@@ -65,6 +65,7 @@ npx agent-browser-protocol                          # launch with defaults
 npx agent-browser-protocol --port 9222              # custom port
 npx agent-browser-protocol --headless               # headless mode
 npx agent-browser-protocol --mcp                    # stdio MCP proxy (for Claude Code)
+npx agent-browser-protocol --setup                   # download browser binary and exit
 npx agent-browser-protocol --session-dir ./session   # persist session data
 npx agent-browser-protocol -- --disable-gpu          # pass Chrome flags
 ```
@@ -122,6 +123,8 @@ Install as a Claude Code plugin for AI-assisted browser automation:
 
 ```bash
 claude plugin marketplace add theredsix/abp-npm
+claude plugin install agent-browser-protocol
+npx -y agent-browser-protocol --setup   # downloads browser binary (~130MB)
 ```
 
 This gives Claude:

@@ -6,6 +6,7 @@ import { spawn, type ChildProcess } from "node:child_process";
 import { ABPClient } from "./client.js";
 import { getExecutablePath } from "./paths.js";
 import { request } from "./http.js";
+import { ensureBinary } from "./ensure-binary.js";
 
 export interface LaunchOptions {
   port?: number;
@@ -55,6 +56,11 @@ export async function launch(options: LaunchOptions = {}): Promise<Browser> {
     windowSize,
     args = [],
   } = options;
+
+  // Auto-download the binary if it's missing (covers plugin installs that skip postinstall)
+  if (!executablePath) {
+    await ensureBinary();
+  }
 
   const binaryPath = getExecutablePath(executablePath);
 
