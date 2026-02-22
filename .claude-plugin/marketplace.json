@@ -13,7 +13,7 @@
       "author": {
         "name": "Han Wang"
       },
-      "source": "..",
+      "source": ".",
       "category": "browser",
       "keywords": ["browser", "automation", "ai", "agent", "chromium", "mcp"],
       "license": "MIT",
