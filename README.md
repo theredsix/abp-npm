@@ -121,7 +121,7 @@ The SDK mirrors the REST API 1:1:
 Install as a Claude Code plugin for AI-assisted browser automation:
 
 ```bash
-claude plugin install agent-browser-protocol@npm
+claude plugin marketplace add theredsix/abp-npm
 ```
 
 This gives Claude:
