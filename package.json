@@ -19,9 +19,7 @@
   },
   "files": [
     "dist/",
-    ".claude-plugin/",
-    ".mcp.json",
-    "skills/",
+    "plugins/",
     "src/debug-ui.html"
   ],
   "scripts": {

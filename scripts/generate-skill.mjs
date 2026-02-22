@@ -10,7 +10,7 @@ import { fileURLToPath } from "node:url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PACKAGE_ROOT = resolve(__dirname, "..");
 const CPP_SOURCE = resolve(PACKAGE_ROOT, "../../chrome/browser/abp/abp_mcp_handler.cc");
-const SKILL_DIR = resolve(PACKAGE_ROOT, "skills/abp-browser");
+const SKILL_DIR = resolve(PACKAGE_ROOT, "plugins/agent-browser-protocol/skills/abp-browser");
 const SKILL_PATH = resolve(SKILL_DIR, "SKILL.md");
 
 const FRONTMATTER = `---
