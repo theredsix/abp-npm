@@ -6,6 +6,7 @@ import { ABP_VERSION, CHROME_VERSION } from "../paths.js";
 interface ParsedArgs {
   port: number;
   headless: boolean;
+  mcp: boolean;
   sessionDir?: string;
   chromeArgs: string[];
 }
@@ -13,6 +14,7 @@ interface ParsedArgs {
 function parseArgs(argv: string[]): ParsedArgs {
   let port = parseInt(process.env.ABP_PORT || "8222", 10);
   let headless = process.env.ABP_HEADLESS === "1";
+  let mcp = false;
   let sessionDir: string | undefined;
   const chromeArgs: string[] = [];
   let pastSeparator = false;
@@ -40,6 +42,8 @@ function parseArgs(argv: string[]): ParsedArgs {
       i++;
     } else if (argv[i].startsWith("--session-dir=")) {
       sessionDir = argv[i].split("=").slice(1).join("=");
+    } else if (argv[i] === "--mcp") {
+      mcp = true;
     } else if (argv[i] === "--help" || argv[i] === "-h") {
       console.log(`agent-browser-protocol v${ABP_VERSION} (Chrome ${CHROME_VERSION})
 
@@ -49,6 +53,7 @@ Usage:
 Options:
   --port <port>          Port to listen on (default: 8222)
   --headless             Run without a visible window
+  --mcp                  Start as stdio MCP proxy (for Claude Code)
   --session-dir <path>   Directory for session data (database, screenshots)
   --help, -h             Show this help message
 
@@ -72,11 +77,17 @@ Examples:
     }
   }
 
-  return { port, headless, sessionDir, chromeArgs };
+  return { port, headless, mcp, sessionDir, chromeArgs };
 }
 
 async function main() {
-  const { port, headless, sessionDir, chromeArgs } = parseArgs(process.argv);
+  const { port, headless, mcp, sessionDir, chromeArgs } = parseArgs(process.argv);
+
+  if (mcp) {
+    const { runMcpProxy } = await import("../mcp-proxy.js");
+    await runMcpProxy({ port, headless });
+    return;
+  }
 
   console.log(`Agent Browser Protocol v${ABP_VERSION} (Chrome ${CHROME_VERSION})`);
   console.log(`Starting on port ${port}...`);
