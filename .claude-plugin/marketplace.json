@@ -1,0 +1,23 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "abp-npm",
+  "description": "Agent Browser Protocol - deterministic AI agent browser control at the engine level",
+  "owner": {
+    "name": "Han Wang"
+  },
+  "plugins": [
+    {
+      "name": "agent-browser-protocol",
+      "description": "AI agent browser control with 12 MCP tools + usage guide skill",
+      "version": "0.1.3",
+      "author": {
+        "name": "Han Wang"
+      },
+      "source": "..",
+      "category": "browser",
+      "keywords": ["browser", "automation", "ai", "agent", "chromium", "mcp"],
+      "license": "MIT",
+      "repository": "https://github.com/theredsix/abp-npm"
+    }
+  ]
+}
