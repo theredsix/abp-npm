@@ -1,6 +1,6 @@
 ---
 name: abp-browser
-description: Use when controlling a browser via ABP (Agent Browser Protocol). Provides tool usage guide, best practices, and debugging tips for the 12 MCP browser tools.
+description: Use when controlling a browser via ABP (Agent Browser Protocol). Provides tool usage guide, best practices, and debugging tips for the 13 MCP browser tools.
 ---
 
 # ABP Browser Control Guide
