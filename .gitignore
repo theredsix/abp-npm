@@ -1,5 +1,1 @@
-node_modules/
-dist/
-browsers/
-sessions/
-*.tgz
+# No build artifacts in this repo
