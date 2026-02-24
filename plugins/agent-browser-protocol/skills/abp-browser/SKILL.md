@@ -1,6 +1,6 @@
 ---
 name: abp-browser
-description: Use when controlling a browser via ABP (Agent Browser Protocol). Provides tool usage guide, best practices, and debugging tips for the 13 MCP browser tools.
+description: ALWAYS use this skill when navigating websites, browsing the web, or interacting with web pages. Provides tool usage guide, best practices, and debugging tips for the ABP browser MCP tools.
 ---
 
 # ABP Browser Control Guide
@@ -39,9 +39,17 @@ Sometimes 500ms isn't enough for the page to finish loading (AJAX, animations, r
 
 ## Markup Overlays
 
-Pass `markup: ["clickable", "typeable", "grid"]` to `browser_screenshot` to see labeled overlays on interactive elements. Each label shows the element's coordinates for targeting clicks and typing.
+Pass `markup` to `browser_screenshot` to see visual overlays on the page. Available overlays:
 
-## Tool Reference (13 tools)
+- **`clickable`** — Green outlines around clickable elements (links, buttons, onclick handlers)
+- **`typeable`** — Orange outlines around text inputs and textareas
+- **`scrollable`** — Purple dashed outlines around scrollable containers
+- **`selected`** — Blue outline around the currently focused element
+- **`grid`** — Red coordinate grid at 100px intervals with viewport coordinate labels
+
+Use `grid` to map viewport coordinates for targeting clicks. Use `clickable` and `typeable` to identify interactive elements visually.
+
+## Tool Reference (15 tools)
 
 All `tab_id` parameters are optional and default to the active tab.
 
@@ -61,8 +69,9 @@ All `tab_id` parameters are optional and default to the active tab.
 
 **Situational:**
 - `browser_dialog` — action? (check, accept, dismiss; default: check), prompt_text?
-- `browser_downloads` — action? (list, status, cancel; default: list), download_id?, state?, limit?
-- `browser_files` — chooser_id (required), files?, path?, cancel?
+- `browser_downloads` — action? (list, status, cancel, content; default: list), download_id?, state?, limit?, max_size?
+- `browser_files` — chooser_id (required), files?, content_files?, path?, cancel?
+- `browser_select_picker` — Respond to pending select/dropdown popups
 
 **Browser:**
 - `browser_get_status` — no params
@@ -70,10 +79,16 @@ All `tab_id` parameters are optional and default to the active tab.
 
 ## Debugging
 
-Session data is stored in the session directory (set via `--abp-session-dir` or defaults to `/tmp/abp-<UUID>/`):
+Use `browser_get_status` to check if the browser is ready and connected.
 
+Session data (history database, screenshots) is stored in a session directory. To find the paths, query the REST API:
+```bash
+curl http://localhost:8222/api/v1/browser/session-data
 ```
-sessions/<timestamp>/
+
+The session directory contains:
+```
+<session_dir>/
 ├── history.db           # SQLite database with sessions, actions, events
 └── screenshots/         # Auto-saved before/after WebP screenshots per action
 ```
